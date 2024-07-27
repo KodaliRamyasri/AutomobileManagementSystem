@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vehicle Service Chatbot</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <style type="text/css">
+        body {
+            font-family: Arial, sans-serif;
+            background-color:black ;
+            margin: 0;
+            padding: 0;
+        }
+
+        .chat-container {
+            width: 400px;
+            margin: 20px auto;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        #chat-box {
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .user-message, .bot-response {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+
+        .user-message {
+            background-color: #e1ffc7;
+            align-self: flex-start;
+        }
+
+        .bot-response {
+            background-color: #f1f1f1;
+            align-self: flex-end;
+        }
+
+        #chat-form {
+            display: flex;
+            padding: 10px;
+        }
+
+        #message {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .back-home {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .back-home a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 16px;
+        }
+
+        .back-home a:hover {
+            color: #0056b3;
+        }
+            .bs-example {
+      margin: 0px;
+    }
+    .bg-dark {
+    background-color: #4f55c7!important;
+}
+    .navbar-brand {
+      font-size: 20px;
+      font-family: sans-serif;
+
+    }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="bs-example">
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
+      <a href="/" class="navbar-brand" style="color:yellow;">Automobile Management System</a>
+      <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+        <div class="navbar-nav">
+          <a href="/" class="nav-item nav-link active">Home</a>
+          <a href="{% url 'customerClick' %}" class="nav-item nav-link">Customer</a>
+          <a href="{% url 'mechanicsClick' %}" class="nav-item nav-link">Mechanics</a>
+          <a href="{% url 'adminClick' %}" class="nav-item nav-link">Admin</a>
+          <a href="{% url 'home' %}" class="nav-item nav-link">Chatbot  </a>
+        </div>
+        <div class="navbar-nav">
+          <a href="{% url 'aboutUs' %}" class="nav-item nav-link">About Us</a>
+          <a href="{% url 'contactUs' %}" class="nav-item nav-link">Contact Us</a>
+        </div>
+      </div>
+    </nav>
+  </div>
+
+    <br>
+    <br>!
+
+    <br>
+    <h1 style="text-align:center; color:white">WELCOME TO THE VEHICLE BOT</h1>
+    <div class="chat-container">
+        <div id="chat-box">
+            <div class="bot-response">
+                Hello! How can we assist you today? Please choose one of the following options:<br>
+                1. What problems we can solve<br>
+                2. How to book an appointment<br>
+                3. Contact us<br>
+                4. Service pricing<br>
+                5. Operating hours<br>
+                6. Location and directions
+            </div>
+        </div>
+        <form id="chat-form" method="post" action="{% url 'chat' %}">
+            {% csrf_token %}
+            <input type="text" id="message" name="message" placeholder="Type your message here..." required>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+
+    <script>
+        const chatForm = document.getElementById('chat-form');
+        const chatBox = document.getElementById('chat-box');
+
+        chatForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(chatForm);
+
+            fetch(chatForm.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message && data.response) {
+                    const userMessage = document.createElement('div');
+                    userMessage.classList.add('user-message');
+                    userMessage.innerText = data.message;
+
+                    const botResponse = document.createElement('div');
+                    botResponse.classList.add('bot-response');
+                    botResponse.innerText = data.response;
+
+                    chatBox.appendChild(userMessage);
+                    chatBox.appendChild(botResponse);
+
+                    chatForm.reset();
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

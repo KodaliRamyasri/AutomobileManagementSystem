@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" dir="ltr">
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+
+
+</head>
+
+<body>
+
+  {% include "adminApp/adminNavBar.html" %}
+  <br><br>
+
+  <center>
+    <h3 class='alert alert-success'>Send Us Your Valuable Feedback !</h3>
+
+    <form method="POST">
+      <!-- Very Important csrf Token -->
+      {% csrf_token %}
+      <div class="form-group">
+        <p>
+        <h3>{{ form.as_p }}</h3>
+        </p>
+        <br>
+        <input type="submit" value="Send Message" class='btn btn-primary btn-lg'>
+      </div>
+    </form>
+  </center>
+   <marquee behavior="scroll" direction="left">
+    <img src="{% static 'images/ferrari.png' %}" width="120" height="80" alt="Ferrari" />
+    <img src="{% static 'images/ford.png' %}" width="120" height="80" alt="Ford" />
+    <img src="{% static 'images/lambo.png' %}" width="120" height="80" alt="Lamborghini" />
+    <img src="{% static 'images/mahindra.png' %}" width="120" height="80" alt="Mahindra" />
+    <img src="{% static 'images/tvs.png' %}" width="120" height="80" alt="TVS" />
+    <img src="{% static 'images/tata.png' %}" width="120" height="80" alt="Tata" />
+    <img src="{% static 'images/hero.png' %}" width="120" height="80" alt="Hero" />
+    <img src="{% static 'images/rolls.png' %}" width="120" height="80" alt="Rolls Royce" />
+    <img src="{% static 'images/suzuki.png' %}" width="120" height="80" alt="Suzuki" />
+  </marquee>
+  {% include "adminApp/footer.html" %}
+</body>
+
+</html>
